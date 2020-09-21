@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, url_for, render_template
 
 app = Flask(__name__)
 
@@ -51,8 +51,10 @@ movies = [
 ]
 
 @app.route("/")
-def index():
-  return "Welcome to the Movies API!"
+def home():
+  return render_template("home.html")
+
+# @app.route  
 
 if __name__ == '__main__':
   app.run(debug=True)
