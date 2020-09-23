@@ -56,11 +56,6 @@ movies = [
 def home():
   return render_template("home.html")
 
-# Handle 404 errors
-@app.errorhandler(404)
-def not_found(error):
-  return make_response(jsonify({'error': 'Could not find that movie'}), 404)  
-
 # Entry point of our API
 # Returns a list of all movies
 @app.route("/api/v1.0/movies", methods=["GET"])
@@ -74,6 +69,44 @@ def get_movie(id):
   if len(data) == 0:
     abort(404)
   return jsonify({'movie': data[0]})
+
+# Add new movie
+@app.route("/api/v1.0/movies", methods=["POST"])
+def add_movie():
+  if not request.json or not 'title' in request.json:
+    abort(400)
+  movie = {
+    id: movies[-1]['id'] + 1,
+    title: request.json['title'],
+    plot: request.json.get('plot', ''),
+    director: request.json.get('director', ''),
+    genre: request.json.get('genre', ''),
+    starring: request.json.get('starring', ''),
+    year: request.json.get('year', '')
+  }
+  movies.append(movie)
+  return jsonify({'movie': movie})
+
+# Update existing movie
+@app.route('/api/v1.0/movies/<int:id>', methods=['PUT'])
+def update_movie(id):
+  pass
+
+# Delete movie
+@app.route('/api/v1.0/movies/<int:id>', methods=['DELETE'])
+def delete_movie(id):
+  pass
+
+# Handle 404 errors
+@app.errorhandler(404)
+def not_found(error):
+  return make_response(jsonify({'error': 'Could not find that movie'}), 404)  
+
+# Handle 400 errors
+@app.errorhandler(400)
+def bad_request_error(error):
+  return make_response(jsonify({'error': 'Bad request'}), 400)  
+
 
 if __name__ == '__main__':
   app.run(debug=True)

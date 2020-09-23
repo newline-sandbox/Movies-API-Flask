@@ -9,9 +9,9 @@
       <ul>
         <li>[GET] Get All Movies: <a href="{{ url_for('get_movies') }}">{{ url_for('get_movies') }}</a></li>
         <li>[GET] Get A Single Movie: e.g. <a href="{{ url_for('get_movie', id=1) }}">{{ url_for('get_movie', id=1) }}</a></li>
-        <li>[POST] Add A Movie: </li>
-        <li>[PUT] Update A Movie: </li>
-        <li>[DELETE] Delete A Movie: </li>
+        <li>[POST] Add A Movie: <a href="#">{{ url_for('add_movie') }}</a></li>
+        <li>[PUT] Update A Movie: e.g. <a href="#">{{ url_for('update_movie', id=1) }}</a></li>
+        <li>[DELETE] Delete A Movie: e.g. <a href="#">{{ url_for('delete_movie', id=1) }}</a></li>
       </ul>
     </div>
   </div>
