@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, jsonify, abort, make_response
+from flask import Flask, url_for, request, render_template, jsonify, abort, make_response
 
 app = Flask(__name__)
 
@@ -75,14 +75,19 @@ def get_movie(id):
 def add_movie():
   if not request.json or not 'title' in request.json:
     abort(400)
+  print("***DEBUG***")
+  print("request.json is:")
+  print(request.json)
+  print("title is:")
+  print(request.json['title'])
   movie = {
-    id: movies[-1]['id'] + 1,
-    title: request.json['title'],
-    plot: request.json.get('plot', ''),
-    director: request.json.get('director', ''),
-    genre: request.json.get('genre', ''),
-    starring: request.json.get('starring', ''),
-    year: request.json.get('year', '')
+    'id': movies[-1]['id'] + 1,
+    'title': request.json['title'],
+    'plot': request.json.get('plot', ''),
+    'director': request.json.get('director', ''),
+    'genre': request.json.get('genre', ''),
+    'starring': request.json.get('starring', ''),
+    'year': request.json.get('year', '')
   }
   movies.append(movie)
   return jsonify({'movie': movie})
@@ -91,13 +96,13 @@ def add_movie():
 @app.route('/api/v1.0/movies/<int:id>', methods=['PUT'])
 def update_movie(id):
   data = [movie for movie in movies if movie['id'] == id]
-  if len(movie) == 0:
+  if len(data) == 0:
     abort(404)
   if not request.json:
     abort(400)
-  if 'title' in request.json and type(request.json['title']) is not unicode:
+  if 'title' in request.json and type(request.json['title']) is not str:
     abort(400)
-  if 'plot' in request.json and type(request.json['plot']) is not unicode:
+  if 'plot' in request.json and type(request.json['plot']) is not str:
       abort(400)
   
   # Update movie attribute e.g. `title` with
