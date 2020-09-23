@@ -2,6 +2,8 @@
 
 This is a movies API made with Flask and Python.
 
+![Movie](movies-poster.png)
+
 ## Installing Dependencies
 
 Install dependencies with `pip install -r requirements.txt`
