@@ -90,12 +90,36 @@ def add_movie():
 # Update existing movie
 @app.route('/api/v1.0/movies/<int:id>', methods=['PUT'])
 def update_movie(id):
-  pass
+  data = [movie for movie in movies if movie['id'] == id]
+  if len(movie) == 0:
+    abort(404)
+  if not request.json:
+    abort(400)
+  if 'title' in request.json and type(request.json['title']) is not unicode:
+    abort(400)
+  if 'plot' in request.json and type(request.json['plot']) is not unicode:
+      abort(400)
+  
+  # Update movie attribute e.g. `title` with
+  # ...new attribute value from request
+  # ...if request does not have an updated value
+  # ...reuse the existing value for the attribute    
+  data[0]['title'] = request.json.get('title', data[0]['title'])
+  data[0]['plot'] = request.json.get('plot', data[0]['plot'])
+  data[0]['director'] = request.json.get('director', data[0]['director'])
+  data[0]['starring'] = request.json.get('starring', data[0]['starring'])
+  data[0]['genre'] = request.json.get('genre', data[0]['genre'])
+  data[0]['year'] = request.json.get('year', data[0]['year'])
+  return jsonify({'movie': data[0]})
 
 # Delete movie
 @app.route('/api/v1.0/movies/<int:id>', methods=['DELETE'])
 def delete_movie(id):
-  pass
+  data = [movie for movie in movies if movie['id'] == id]
+  if len(data) == 0:
+      abort(404)
+  movies.remove(data[0])
+  return jsonify({'result': True})
 
 # Handle 404 errors
 @app.errorhandler(404)
@@ -106,7 +130,6 @@ def not_found(error):
 @app.errorhandler(400)
 def bad_request_error(error):
   return make_response(jsonify({'error': 'Bad request'}), 400)  
-
 
 if __name__ == '__main__':
   app.run(debug=True)
