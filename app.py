@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template
+from flask import Flask, url_for, render_template, jsonify
 
 app = Flask(__name__)
 
@@ -54,7 +54,9 @@ movies = [
 def home():
   return render_template("home.html")
 
-# @app.route  
+@app.route("/api/v1.0/movies", methods=["GET"])
+def get_movies():
+  return jsonify({'movies': movies})  
 
 if __name__ == '__main__':
   app.run(debug=True)
