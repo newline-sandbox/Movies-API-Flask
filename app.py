@@ -58,6 +58,13 @@ def home():
 def get_movies():
   return jsonify({'movies': movies})  
 
+@app.route("/api/v1.0/movies/<int:id>", methods=["GET"])
+def get_movie(id):
+  data = [movie for movie in movies if movie['id'] == id]
+  if len(data) == 0:
+    abort(404)
+  return jsonify({'movie': data[0]})
+
 if __name__ == '__main__':
   app.run(debug=True)
   
