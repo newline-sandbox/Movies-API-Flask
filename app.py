@@ -2,6 +2,7 @@ from flask import Flask, url_for, render_template, jsonify, abort, make_response
 
 app = Flask(__name__)
 
+# This stores our movies
 movies = [
   {
     'id': 1,
@@ -50,18 +51,23 @@ movies = [
   }
 ]
 
+# Home route
 @app.route("/")
 def home():
   return render_template("home.html")
 
+# Handle 404 errors
 @app.errorhandler(404)
 def not_found(error):
   return make_response(jsonify({'error': 'Could not find that movie'}), 404)  
 
+# Entry point of our API
+# Returns a list of all movies
 @app.route("/api/v1.0/movies", methods=["GET"])
 def get_movies():
   return jsonify({'movies': movies})  
 
+# Get movie by id
 @app.route("/api/v1.0/movies/<int:id>", methods=["GET"])
 def get_movie(id):
   data = [movie for movie in movies if movie['id'] == id]
