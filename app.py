@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, jsonify
+from flask import Flask, url_for, render_template, jsonify, abort, make_response
 
 app = Flask(__name__)
 
@@ -53,6 +53,10 @@ movies = [
 @app.route("/")
 def home():
   return render_template("home.html")
+
+@app.errorhandler(404)
+def not_found(error):
+  return make_response(jsonify({'error': 'Could not find that movie'}), 404)  
 
 @app.route("/api/v1.0/movies", methods=["GET"])
 def get_movies():
